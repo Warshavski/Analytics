@@ -62,5 +62,7 @@
   <ItemGroup>
     <Build Include="Tables\subdivision.sql" />
     <Build Include="Tables\user.sql" />
+    <Build Include="Tables\supplier.sql" />
+    <Build Include="Tables\document.sql" />
   </ItemGroup>
 </Project>

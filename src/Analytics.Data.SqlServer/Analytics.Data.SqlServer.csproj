@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyticsContext.cs" />
+    <Compile Include="Mappings\DocumentMapping.cs" />
     <Compile Include="Mappings\SubdivisionMapping.cs" />
+    <Compile Include="Mappings\SupplierMapping.cs" />
     <Compile Include="Mappings\UserMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryProcessors\UserByIdQueryProcessor.cs" />

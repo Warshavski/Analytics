@@ -116,9 +116,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="InquiryProcessing\ILoginInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\IUserByIdInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\LoginInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\UserByIdInquiryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
