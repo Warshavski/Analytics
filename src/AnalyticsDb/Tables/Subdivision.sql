@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[subdivison] (
-    [id_subdivision]    BIGINT  IDENTITY (1, 1) NOT NULL,
+    [id_subdivision]    BIGINT NOT NULL,
 	[id_user]			BIGINT NOT NULL,
     [address]			NVARCHAR (100) NULL,
     [name_short]		NVARCHAR (20)  NULL,

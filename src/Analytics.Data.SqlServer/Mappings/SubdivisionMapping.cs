@@ -13,7 +13,6 @@ namespace Analytics.Data.SqlServer.Mappings
             HasKey(s => s.Id);
 
             Property(s => s.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)
                 .HasColumnName("id_subdivision");
 
             Property(s => s.UserId)

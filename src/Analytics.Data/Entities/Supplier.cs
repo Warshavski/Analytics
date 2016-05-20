@@ -8,6 +8,11 @@ namespace Analytics.Data.Entities
 {
     public class Supplier
     {
+        public virtual int Id { get; set; }
+        public virtual string Inn { get; set; }
+        public virtual string ShortName { get; set; }
+        public virtual string FullName { get; set; }
 
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }

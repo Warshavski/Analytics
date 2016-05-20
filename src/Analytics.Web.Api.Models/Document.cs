@@ -10,7 +10,7 @@ namespace Analytics.Web.Api.Models
     {
         private int _documentId;
         
-        private int _supplierId;
+        //private int _supplierId;
         private Supplier _supplier;
 
         private DateTime _documentCreateDate;
