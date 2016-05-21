@@ -89,6 +89,9 @@ namespace Analytics.Web.Api
             container.Bind<IAutoMapperTypeConfigurator>()
                 .To<SubdivisionEntityToSubdivisionMapperTypeConfigurator>()
                 .InSingletonScope();
+            container.Bind<IAutoMapperTypeConfigurator>()
+                .To<UserEntityToUserMapperTypeConfigurator>()
+                .InSingletonScope();
         }
     }
 }

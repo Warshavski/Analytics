@@ -1,30 +1,77 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Analytics.Web.Api.Models
 {
+    public struct DocumentSummary
+    {
+        private decimal _documentDiscount;
+        public decimal Discount { get { return _documentDiscount; } }
+
+        private decimal _documentNdsPrice;
+        public decimal NdsPrice { get { return _documentNdsPrice; } }
+
+        private decimal _documentOrderPrice;
+        public decimal OrderPrice {  get { return _documentOrderPrice; } }
+
+        private decimal _documentRetailPrice;
+        public decimal RetailPrice { get { return _documentRetailPrice; } }
+
+       public DocumentSummary(decimal documentDiscount, decimal documentNdsPrice,
+           decimal documentOrderPrice, decimal documentRetailPrice)
+        {
+            _documentDiscount = documentDiscount;
+            _documentNdsPrice = documentNdsPrice;
+            _documentOrderPrice = documentOrderPrice;
+            _documentRetailPrice = documentRetailPrice;
+        }
+    }
+
+    public struct DocumentDates
+    {
+        private DateTime _documentCreateDate;
+        public DateTime Create { get { return _documentCreateDate; } }
+
+        private DateTime _documentEditDate;
+        public DateTime Edit { get { return _documentEditDate; } }
+
+        private DateTime _documentPayDate;
+        public DateTime Pay { get { return _documentPayDate; } }
+        
+        private DateTime _documentPayFactDate;
+        public DateTime PayFact { get { return _documentPayFactDate; } }
+
+        public DocumentDates(DateTime documentCreateDate, DateTime documentEditDate,
+            DateTime documentPayDate, DateTime documentPayFactDate)
+        {
+            _documentCreateDate = documentCreateDate;
+            _documentEditDate = documentEditDate;
+            _documentPayDate = documentPayDate;
+            _documentPayFactDate = documentPayFactDate;
+        }
+    }
+
     public sealed class Document
     {
         private int _documentId;
-        
-        //private int _supplierId;
-        private Supplier _supplier;
 
-        private DateTime _documentCreateDate;
-        private DateTime _documentEditDate;
-        private DateTime _documentPayDate;
-        private DateTime _documentPayFactDate;
-        
         private int _documentDelayDays;
 
-        private decimal _documentNdsPrice;
-        private decimal _documentOrderPrice;
-        private decimal _documentRetailPrice;
-        private decimal _documentDiscount;
-
         private string _documentComment;
+
+        private Supplier _supplier;
+
+        private DocumentSummary _documentPricesSummary;
+        private DocumentDates _documentDates;
+        
+        public Document(int documentId, int documentDelayDays, string documentComment, 
+            Supplier supplier, DocumentSummary documentPricesSummary, DocumentDates documentDates)
+        {
+            _documentId = documentId;
+            _documentDelayDays = documentDelayDays;
+            _documentComment = documentComment;
+            _supplier = supplier;
+            _documentPricesSummary = documentPricesSummary;
+            _documentDates = documentDates; 
+        }
     }
 }

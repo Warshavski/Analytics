@@ -21,7 +21,8 @@ namespace Analytics.Data.SqlServer
         {
             modelBuilder.Configurations.Add(new UserMapping());
             modelBuilder.Configurations.Add(new SubdivisionMapping());
-
+            modelBuilder.Configurations.Add(new SupplierMapping());
+            modelBuilder.Configurations.Add(new DocumentMapping());
             base.OnModelCreating(modelBuilder);
         }
     }

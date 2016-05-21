@@ -12,6 +12,6 @@ namespace Analytics.Data.Entities
 
         public virtual User User { get; set; }
 
-        public virtual ICollection<Document> Documents;
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }
