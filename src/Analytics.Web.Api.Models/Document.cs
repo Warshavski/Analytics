@@ -53,16 +53,40 @@ namespace Analytics.Web.Api.Models
     public sealed class Document
     {
         private int _documentId;
+        public int Id { get { return _documentId; } }
 
         private int _documentDelayDays;
+        public int DelayDays { get { return _documentDelayDays; } }
 
         private string _documentComment;
+        public string Comment { get { return _documentComment; } }
 
         private Supplier _supplier;
+        public Supplier Supplier { get { return _supplier; } }
+
+        /*
+        private DocumentSummary _documentPricesSummary;
+        public DocumentSummary PricesSummary { get { return _documentPricesSummary; } }
+
+        private DocumentDates _documentDates;
+        public DocumentDates Dates { get { return _documentDates; } }
+        */
 
         private DocumentSummary _documentPricesSummary;
+        public DocumentSummary PricesSummary { get; set; }
+
         private DocumentDates _documentDates;
-        
+        public DocumentDates Dates { get; set; }
+
+        public Document(int documentId, int documentDelayDays, string documentComment, Supplier supplier)
+        {
+            _documentId = documentId;
+            _documentDelayDays = documentDelayDays;
+            _documentComment = documentComment;
+            _supplier = supplier;
+        }
+
+        /*
         public Document(int documentId, int documentDelayDays, string documentComment, 
             Supplier supplier, DocumentSummary documentPricesSummary, DocumentDates documentDates)
         {
@@ -73,5 +97,6 @@ namespace Analytics.Web.Api.Models
             _documentPricesSummary = documentPricesSummary;
             _documentDates = documentDates; 
         }
+        */
     }
 }

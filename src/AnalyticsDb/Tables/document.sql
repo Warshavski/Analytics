@@ -14,6 +14,6 @@
 	[comment]				NVARCHAR(255) NULL
     CONSTRAINT [PK_Dosument]	PRIMARY KEY ([id_document]),
 	CONSTRAINT [FK_Supplier]	FOREIGN KEY ([id_supplier])		 REFERENCES dbo.[supplier] ([id_supplier]),
-	CONSTRAINT [FK_Subdivision] FOREIGN KEY ([id_subdivision])	 REFERENCES dbo.[subdivison] ([id_subdivision])
+	CONSTRAINT [FK_Subdivision] FOREIGN KEY ([id_subdivision])	 REFERENCES dbo.[subdivision] ([id_subdivision])
 );
 

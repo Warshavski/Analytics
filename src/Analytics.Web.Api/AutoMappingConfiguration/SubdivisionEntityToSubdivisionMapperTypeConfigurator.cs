@@ -13,7 +13,8 @@ namespace Analytics.Web.Api.AutoMappingConfiguration
                 .ForCtorParam("subdivId", opt => opt.MapFrom(src => src.Id))
                 .ForCtorParam("subdivAddress", opt => opt.MapFrom(src => src.Address))
                 .ForCtorParam("subdivShortName", opt => opt.MapFrom(src => src.ShortName))
-                .ForCtorParam("subdivFullName", opt => opt.MapFrom(src => src.FullName));
+                .ForCtorParam("subdivFullName", opt => opt.MapFrom(src => src.FullName))
+                .ForCtorParam("subdivDocuments", opt => opt.MapFrom(src => src.Documents));
         }
     }
 }

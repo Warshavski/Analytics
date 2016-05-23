@@ -11,6 +11,21 @@ namespace Analytics.Data.SqlServer.Mappings
             ToTable("document");
             HasKey(d => d.Id);
 
+            Property(d => d.Id)
+                .HasColumnName("id_document");
+
+            Property(d => d.SupplierId)
+              .HasColumnName("id_supplier");
+            HasRequired<Supplier>(d => d.Supplier)
+                .WithMany(u => u.Documents)
+                .HasForeignKey(s => s.SupplierId);
+
+            Property(d => d.SubdivisionId)
+                .HasColumnName("id_subdivision");
+            HasRequired<Subdivision>(d => d.Subdivision)
+               .WithMany(u => u.Documents)
+               .HasForeignKey(s => s.SubdivisionId);
+            
             Property(d => d.CreateDate)
                 .IsRequired()
                 .HasColumnName("date_create");
@@ -42,14 +57,6 @@ namespace Analytics.Data.SqlServer.Mappings
             Property(d => d.Comment)
                 .HasColumnName("comment")
                 .HasMaxLength(255);
-
-            HasRequired<Supplier>(d => d.Supplier)
-                .WithMany(u => u.Documents)
-                .HasForeignKey(s => s.SupplierId);
-
-            HasRequired<Subdivision>(d => d.Subdivision)
-               .WithMany(u => u.Documents)
-               .HasForeignKey(s => s.SubdivisionId);
         }
     }
 }

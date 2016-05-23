@@ -11,6 +11,9 @@ namespace Analytics.Data.SqlServer.Mappings
             ToTable("supplier");
             HasKey(s => s.Id);
 
+            Property(s => s.Id)
+                .HasColumnName("id_supplier");
+
             Property(s => s.Inn)
                 .HasColumnName("inn")
                 .HasMaxLength(50);

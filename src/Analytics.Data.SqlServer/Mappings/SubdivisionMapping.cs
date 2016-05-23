@@ -9,7 +9,7 @@ namespace Analytics.Data.SqlServer.Mappings
     {
         public SubdivisionMapping()
         {
-            ToTable("subdivison");
+            ToTable("subdivision");
             HasKey(s => s.Id);
 
             Property(s => s.Id)

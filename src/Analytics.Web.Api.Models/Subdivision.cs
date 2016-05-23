@@ -17,7 +17,6 @@ namespace Analytics.Web.Api.Models
         private string _subdivFullName;
         public string FullName { get { return _subdivFullName; } }
 
-        /*
         private IEnumerable<Document> _subdivDocuments;
         public IEnumerable<Document> Documents 
         { 
@@ -26,8 +25,7 @@ namespace Analytics.Web.Api.Models
                 return _subdivDocuments.ToList().AsReadOnly(); 
             } 
         }
-        */
-
+        
         public Subdivision(long subdivId, string subdivAddress,
             string subdivShortName, string subdivFullName)
         {
@@ -35,6 +33,17 @@ namespace Analytics.Web.Api.Models
             _subdivAddress = subdivAddress;
             _subdivShortName = subdivShortName;
             _subdivFullName = subdivFullName;
+        }
+
+        public Subdivision(long subdivId, string subdivAddress, string subdivShortName, 
+            string subdivFullName, IEnumerable<Document> subdivDocuments)
+        {
+            _subdivId = subdivId;
+            _subdivAddress = subdivAddress;
+            _subdivShortName = subdivShortName;
+            _subdivFullName = subdivFullName;
+
+            _subdivDocuments = subdivDocuments;
         }
     }
 }

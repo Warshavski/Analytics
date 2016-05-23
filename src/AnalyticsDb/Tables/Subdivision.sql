@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[subdivison] (
+﻿CREATE TABLE [dbo].[subdivision] (
     [id_subdivision]    BIGINT NOT NULL,
 	[id_user]			BIGINT NOT NULL,
     [address]			NVARCHAR (100) NULL,

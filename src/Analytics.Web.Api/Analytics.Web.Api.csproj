@@ -112,6 +112,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AutoMappingConfiguration\DocumentEntityToDocumentMapperTypeConfigurator.cs" />
     <Compile Include="AutoMappingConfiguration\SubdivisionEntityToSubdivisionMapperTypeConfigurator.cs" />
+    <Compile Include="AutoMappingConfiguration\SupplierEntityToSupplierMapperTypeConfigurator.cs" />
     <Compile Include="AutoMappingConfiguration\UserEntityToUserMapperTypeConfigurator.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
