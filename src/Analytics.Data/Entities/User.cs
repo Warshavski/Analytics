@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Analytics.Data.Entities
 {
+    [Serializable]
     public class User
     {
         public virtual long Id { get; set; }

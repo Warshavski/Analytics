@@ -19,6 +19,8 @@ using Analytics.Data.SqlServer.QueryProcessors;
 using Analytics.Web.Api.AutoMappingConfiguration;
 using Analytics.Web.Api.InquiryProcessing;
 
+using Analytics.Web.Api.Repositories;
+
 namespace Analytics.Web.Api
 {
    /*
@@ -63,6 +65,10 @@ namespace Analytics.Web.Api
                 .InRequestScope();
             container.Bind<IUserByIdInquiryProcessor>()
                 .To<UserByIdInquiryProcessor>()
+                .InRequestScope();
+
+            container.Bind<ISubdivisionsRepository>()
+                .To<SubdivisionsRepository>()
                 .InRequestScope();
         }
 

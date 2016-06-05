@@ -114,6 +114,7 @@
     <Compile Include="AutoMappingConfiguration\SubdivisionEntityToSubdivisionMapperTypeConfigurator.cs" />
     <Compile Include="AutoMappingConfiguration\SupplierEntityToSupplierMapperTypeConfigurator.cs" />
     <Compile Include="AutoMappingConfiguration\UserEntityToUserMapperTypeConfigurator.cs" />
+    <Compile Include="Controllers\SubdivisionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -123,6 +124,9 @@
     <Compile Include="InquiryProcessing\LoginInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\UserByIdInquiryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IDocumentsRepository.cs" />
+    <Compile Include="Repositories\ISubdivisionsRepository.cs" />
+    <Compile Include="Repositories\SubdivisionsRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

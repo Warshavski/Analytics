@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Analytics.Data.Entities
 {
+    [Serializable]
     public class Supplier
     {
         public virtual int Id { get; set; }

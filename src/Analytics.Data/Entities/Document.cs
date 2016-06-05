@@ -2,6 +2,7 @@
 
 namespace Analytics.Data.Entities
 {
+    [Serializable]
     public class Document
     {
         public virtual int Id { get; set; }

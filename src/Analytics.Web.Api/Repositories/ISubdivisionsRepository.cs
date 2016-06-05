@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Analytics.Web.Api.Models;
+using Analytics.Data.Entities;
 
 namespace Analytics.Web.Api.Repositories
 {
