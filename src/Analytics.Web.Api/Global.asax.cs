@@ -1,7 +1,9 @@
-﻿using System.Web.Http;
-
-using Analytics.Common.TypeMapping;
-using Analytics.Web.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Http;
+using System.Web.Routing;
 
 namespace Analytics.Web.Api
 {
@@ -10,8 +12,6 @@ namespace Analytics.Web.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
-            new AutoMapperConfigurator().Configure(WebContainerManager.GetAll<IAutoMapperTypeConfigurator>());
         }
     }
 }

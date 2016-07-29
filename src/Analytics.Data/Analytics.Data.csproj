@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{795F8DBD-045A-4278-809B-7A915C8E46EF}</ProjectGuid>
+    <ProjectGuid>{325B1C88-AF8C-40C0-B367-78D772898FEB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Analytics.Data</RootNamespace>
     <AssemblyName>Analytics.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -39,18 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Document.cs" />
-    <Compile Include="Entities\Subdivision.cs" />
-    <Compile Include="Entities\Supplier.cs" />
-    <Compile Include="Entities\User.cs" />
-    <Compile Include="Exceptions\ChildObjectNotFoundException.cs" />
-    <Compile Include="Exceptions\RootObjectNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryProcessors\IDocumentByIdQueryProcessor.cs" />
-    <Compile Include="QueryProcessors\IUserByIdQueryProcessor.cs" />
-    <Compile Include="QueryProcessors\IUserByLoginQueryProcessor.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Analytics.Web.Api.Models\Analytics.Web.Api.Models.csproj">
+      <Project>{ab37518c-e6d1-4e60-aeba-470bd574249d}</Project>
+      <Name>Analytics.Web.Api.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\CreateDatabase.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

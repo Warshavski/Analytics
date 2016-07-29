@@ -1,1 +1,0 @@
-﻿public enum UserRoles { Admin, Manager }

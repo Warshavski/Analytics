@@ -1,0 +1,1 @@
+﻿Describe mappings between domain(model) entities, and persistent(data storage tables) entities.

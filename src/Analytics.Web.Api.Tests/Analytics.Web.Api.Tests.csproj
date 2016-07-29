@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0692B20A-C439-48A5-B7B3-BCFD9ED4C1A6}</ProjectGuid>
+    <ProjectGuid>{D43A5A08-5F88-439E-A68E-3D5D40000E6C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Analytics.Web.Api.Tests</RootNamespace>
     <AssemblyName>Analytics.Web.Api.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <IsCodedUITest>False</IsCodedUITest>
@@ -53,12 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Analytics.Web.Api\Analytics.Web.Api.csproj">
-      <Project>{64D1FC20-E9EF-40BC-967E-4582CA4620C4}</Project>
+      <Project>{EB6177F3-88B2-424D-90D3-DAF018483BAA}</Project>
       <Name>Analytics.Web.Api</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
