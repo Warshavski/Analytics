@@ -8,9 +8,9 @@ using Analytics.Web.Api.Models.Repositories;
 
 namespace Analytics.Data.EntityFramework.Repositories
 {
-    internal class ExternalLoginRepository : Repository<ExternalLogin>, IExternalLoginRepository
+    public class ExternalLoginRepository : Repository<ExternalLogin>, IExternalLoginRepository
     {
-        internal ExternalLoginRepository(ApplicationDbContext context)
+        public ExternalLoginRepository(ApplicationDbContext context)
             : base(context)
         {
         }

@@ -9,19 +9,28 @@ namespace Analytics.Web.Api.Models.Entities
     public class User
     {
         #region Fields
+
         private ICollection<Claim> _claims;
         private ICollection<ExternalLogin> _externalLogins;
         private ICollection<Role> _roles;
-        #endregion
+
+        #endregion Fields
+        //---------------------------------------------------------------------
+
 
         #region Scalar Properties
+        
         public Guid UserId { get; set; }
         public string UserName { get; set; }
         public virtual string PasswordHash { get; set; }
         public virtual string SecurityStamp { get; set; }
-        #endregion
+
+        #endregion Scalar Properties
+        //---------------------------------------------------------------------
+
 
         #region Navigation Properties
+
         public virtual ICollection<Claim> Claims
         {
             get { return _claims ?? (_claims = new List<Claim>()); }
@@ -43,6 +52,8 @@ namespace Analytics.Web.Api.Models.Entities
             get { return _roles ?? (_roles = new List<Role>()); }
             set { _roles = value; }
         }
-        #endregion
+
+        #endregion Navigation Properties
+        //---------------------------------------------------------------------
     }
 }

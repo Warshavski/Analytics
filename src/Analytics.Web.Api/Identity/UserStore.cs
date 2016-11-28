@@ -1,10 +1,14 @@
-﻿using Analytics.Web.Api.Models;
-using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
+
+using Microsoft.AspNet.Identity;
+
+using Analytics.Web.Api.Models;
+
+using Entities = Analytics.Web.Api.Models.Entities;
 
 namespace Analytics.Web.Api.Identity
 {
@@ -25,64 +29,71 @@ namespace Analytics.Web.Api.Identity
 
         #region IUserStore<IdentityUser, Guid> Members
 
-        public Task CreateAsync(IdentityUser identityUser)
+        public async Task CreateAsync(IdentityUser identityUser)
         {
             if (identityUser == null)
             {
                 throw new ArgumentNullException("user");
             }
 
-            var user = getUser(identityUser);
+            var userEntity = GetUser(identityUser);
 
-            _unitOfWork.UserRepository.Add(user);
+            _unitOfWork.UserRepository.Add(userEntity);
 
-            return _unitOfWork.SaveChangesAsync();
+            var result = await _unitOfWork.SaveChangesAsync();
+            //return _unitOfWork.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(IdentityUser identityUser)
+        public async Task DeleteAsync(IdentityUser identityUser)
         {
             if (identityUser == null)
             {
                 throw new ArgumentNullException("user");
             }
 
-            var user = getUser(identityUser);
+            var userEntity = GetUser(identityUser);
 
-            _unitOfWork.UserRepository.Remove(user);
+            _unitOfWork.UserRepository.Remove(userEntity);
 
-            return _unitOfWork.SaveChangesAsync();
+            var result = await _unitOfWork.SaveChangesAsync();
+            //return _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<IdentityUser> FindByIdAsync(Guid userId)
+        public async Task<IdentityUser> FindByIdAsync(Guid userId)
         {
-            var user = _unitOfWork.UserRepository.FindById(userId);
-            return Task.FromResult<IdentityUser>(getIdentityUser(user));
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(userId);
+
+            return GetIdentityUser(userEntity);
+            //return Task.FromResult<IdentityUser>(GetIdentityUser(userEntity));
         }
 
-        public Task<IdentityUser> FindByNameAsync(string userName)
+        public async Task<IdentityUser> FindByNameAsync(string userName)
         {
-            var user = _unitOfWork.UserRepository.FindByUserName(userName);
-            return Task.FromResult<IdentityUser>(getIdentityUser(user));
+            var userEntity = await _unitOfWork.UserRepository.FindByUserNameAsync(userName);
+
+            return GetIdentityUser(userEntity);
+            //return Task.FromResult<IdentityUser>(GetIdentityUser(userEntity));
         }
 
-        public Task UpdateAsync(IdentityUser identityUser)
+        public async Task UpdateAsync(IdentityUser identityUser)
         {
             if (identityUser == null)
             {
                 throw new ArgumentException("user");
             }
-            
-            var user = _unitOfWork.UserRepository.FindById(identityUser.Id);
-            if (user == null)
+
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
             {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
             }
 
-            populateUser(user, identityUser);
+            PopulateUser(userEntity, identityUser);
 
-            _unitOfWork.UserRepository.Update(user);
+            _unitOfWork.UserRepository.Update(userEntity);
 
-            return _unitOfWork.SaveChangesAsync();
+            var result = await _unitOfWork.SaveChangesAsync();
+            //return _unitOfWork.SaveChangesAsync();
         }
 
         #endregion IUserStore<IdentityUser, Guid> Members
@@ -102,57 +113,84 @@ namespace Analytics.Web.Api.Identity
 
         #region IUserClaimStore<IdentityUser, Guid> Members
 
-        public Task AddClaimAsync(IdentityUser user, Claim claim)
+        public async Task AddClaimAsync(IdentityUser identityUser, Claim claim)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+                
             if (claim == null)
+            {
                 throw new ArgumentNullException("claim");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
-
-            var c = new Entities.Claim
+            }
+            
+            var claimEntity = new Entities.Claim
             {
                 ClaimType = claim.Type,
                 ClaimValue = claim.Value,
-                User = u
+                User = userEntity
             };
-            u.Claims.Add(c);
+            userEntity.Claims.Add(claimEntity);
 
-            _unitOfWork.UserRepository.Update(u);
-            return _unitOfWork.SaveChangesAsync();
+            _unitOfWork.UserRepository.Update(userEntity);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            //return _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<IList<Claim>> GetClaimsAsync(IdentityUser user)
+        public async Task<IList<Claim>> GetClaimsAsync(IdentityUser identityUser)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
-
-            return Task.FromResult<IList<Claim>>(u.Claims.Select(x => new Claim(x.ClaimType, x.ClaimValue)).ToList());
+            }
+            return (IList<Claim>)userEntity.Claims.Select(x =>
+                new Claim(x.ClaimType, x.ClaimValue)).ToList();
+            //return Task.FromResult<IList<Claim>>(userEntity.Claims.Select(x => 
+            //    new Claim(x.ClaimType, x.ClaimValue)).ToList());
         }
 
-        public Task RemoveClaimAsync(IdentityUser user, Claim claim)
+        public async Task RemoveClaimAsync(IdentityUser identityUser, Claim claim)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+                
             if (claim == null)
+            {
                 throw new ArgumentNullException("claim");
-
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            }
+            
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            }
+            
+            var claimEntity = userEntity.Claims.FirstOrDefault(x => 
+                x.ClaimType == claim.Type && 
+                x.ClaimValue == claim.Value);
 
-            var c = u.Claims.FirstOrDefault(x => x.ClaimType == claim.Type && x.ClaimValue == claim.Value);
-            u.Claims.Remove(c);
+            userEntity.Claims.Remove(claimEntity);
 
-            _unitOfWork.UserRepository.Update(u);
-            return _unitOfWork.SaveChangesAsync();
+            _unitOfWork.UserRepository.Update(userEntity);
+            var result = await _unitOfWork.SaveChangesAsync();
+            //return _unitOfWork.SaveChangesAsync();
         }
 
         #endregion IUserClaimStore<IdentityUser, Guid> Members
@@ -161,71 +199,107 @@ namespace Analytics.Web.Api.Identity
 
         #region IUserLoginStore<IdentityUser, Guid> Members
 
-        public Task AddLoginAsync(IdentityUser user, UserLoginInfo login)
+        public async Task AddLoginAsync(IdentityUser identityUser, UserLoginInfo login)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+                
             if (login == null)
+            {
                 throw new ArgumentNullException("login");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
-
-            var l = new Entities.ExternalLogin
+            }
+            
+            var externalLogin = new Entities.ExternalLogin
             {
                 LoginProvider = login.LoginProvider,
                 ProviderKey = login.ProviderKey,
-                User = u
+                User = userEntity
             };
-            u.Logins.Add(l);
+            userEntity.Logins.Add(externalLogin);
 
-            _unitOfWork.UserRepository.Update(u);
-            return _unitOfWork.SaveChangesAsync();
+            _unitOfWork.UserRepository.Update(userEntity);
+            var result = await _unitOfWork.SaveChangesAsync();
+            //return _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<IdentityUser> FindAsync(UserLoginInfo login)
+        public async Task<IdentityUser> FindAsync(UserLoginInfo login)
         {
             if (login == null)
+            {
                 throw new ArgumentNullException("login");
-
+            }
+            
             var identityUser = default(IdentityUser);
 
-            var l = _unitOfWork.ExternalLoginRepository.GetByProviderAndKey(login.LoginProvider, login.ProviderKey);
-            if (l != null)
-                identityUser = getIdentityUser(l.User);
+            var externalLogin = await _unitOfWork.ExternalLoginRepository.
+                GetByProviderAndKeyAsync(login.LoginProvider, login.ProviderKey);
 
-            return Task.FromResult<IdentityUser>(identityUser);
+            if (externalLogin != null)
+            {
+                identityUser = GetIdentityUser(externalLogin.User);
+            }
+
+            return identityUser;
+
+            //return Task.FromResult<IdentityUser>(identityUser);
         }
 
-        public Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityUser user)
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityUser identityUser)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            }
 
-            return Task.FromResult<IList<UserLoginInfo>>(u.Logins.Select(x => new UserLoginInfo(x.LoginProvider, x.ProviderKey)).ToList());
+            return (IList<UserLoginInfo>)userEntity.Logins.Select(x =>
+                new UserLoginInfo(x.LoginProvider, x.ProviderKey)).ToList();
+
+            //return Task.FromResult<IList<UserLoginInfo>>(userEntity.Logins.Select(x => 
+            //    new UserLoginInfo(x.LoginProvider, x.ProviderKey)).ToList());
         }
 
-        public Task RemoveLoginAsync(IdentityUser user, UserLoginInfo login)
+        public async Task RemoveLoginAsync(IdentityUser identityUser, UserLoginInfo login)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+
             if (login == null)
+            {
                 throw new ArgumentNullException("login");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            }
+            
+            var externalLogin = userEntity.Logins.FirstOrDefault(x => 
+                x.LoginProvider == login.LoginProvider && 
+                x.ProviderKey == login.ProviderKey);
 
-            var l = u.Logins.FirstOrDefault(x => x.LoginProvider == login.LoginProvider && x.ProviderKey == login.ProviderKey);
-            u.Logins.Remove(l);
+            userEntity.Logins.Remove(externalLogin);
 
-            _unitOfWork.UserRepository.Update(u);
-            return _unitOfWork.SaveChangesAsync();
+            _unitOfWork.UserRepository.Update(userEntity);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+            //return _unitOfWork.SaveChangesAsync();
         }
 
         #endregion IUserLoginStore<IdentityUser, Guid> Members
@@ -234,68 +308,105 @@ namespace Analytics.Web.Api.Identity
 
         #region IUserRoleStore<IdentityUser, Guid> Members
 
-        public Task AddToRoleAsync(IdentityUser user, string roleName)
+        public async Task AddToRoleAsync(IdentityUser identityUser, string roleName)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+                
             if (string.IsNullOrWhiteSpace(roleName))
+            {
                 throw new ArgumentException("Argument cannot be null, empty, or whitespace: roleName.");
-
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            }
+            
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
-            var r = _unitOfWork.RoleRepository.FindByName(roleName);
-            if (r == null)
+            }
+                
+            var roleEntity = await _unitOfWork.RoleRepository.FindByNameAsync(roleName);
+            if (roleEntity == null)
+            {
                 throw new ArgumentException("roleName does not correspond to a Role entity.", "roleName");
+            }
 
-            u.Roles.Add(r);
-            _unitOfWork.UserRepository.Update(u);
+            userEntity.Roles.Add(roleEntity);
+            _unitOfWork.UserRepository.Update(userEntity);
 
-            return _unitOfWork.SaveChangesAsync();
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            //return _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<IList<string>> GetRolesAsync(IdentityUser user)
+        public async Task<IList<string>> GetRolesAsync(IdentityUser identityUser)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            }
 
-            return Task.FromResult<IList<string>>(u.Roles.Select(x => x.Name).ToList());
+            return (IList<string>)userEntity.Roles.Select(x => x.Name).ToList();
+
+            //return Task.FromResult<IList<string>>(userEntity.Roles.Select(x => x.Name).ToList());
         }
 
-        public Task<bool> IsInRoleAsync(IdentityUser user, string roleName)
+        public async Task<bool> IsInRoleAsync(IdentityUser identityUser, string roleName)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+                
             if (string.IsNullOrWhiteSpace(roleName))
+            {
                 throw new ArgumentException("Argument cannot be null, empty, or whitespace: role.");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity = await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            }
 
-            return Task.FromResult<bool>(u.Roles.Any(x => x.Name == roleName));
+            return (bool)userEntity.Roles.Any(x => x.Name == roleName);
+
+            //return Task.FromResult<bool>(userEntity.Roles.Any(x => x.Name == roleName));
         }
 
-        public Task RemoveFromRoleAsync(IdentityUser user, string roleName)
+        public async Task RemoveFromRoleAsync(IdentityUser identityUser, string roleName)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
+            }
+                
             if (string.IsNullOrWhiteSpace(roleName))
+            {
                 throw new ArgumentException("Argument cannot be null, empty, or whitespace: role.");
+            }
 
-            var u = _unitOfWork.UserRepository.FindById(user.Id);
-            if (u == null)
+            var userEntity =  await _unitOfWork.UserRepository.FindByIdAsync(identityUser.Id);
+            if (userEntity == null)
+            {
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
+            }
 
-            var r = u.Roles.FirstOrDefault(x => x.Name == roleName);
-            u.Roles.Remove(r);
+            var roleEntity = userEntity.Roles.FirstOrDefault(x => x.Name == roleName);
+            userEntity.Roles.Remove(roleEntity);
 
-            _unitOfWork.UserRepository.Update(u);
-            return _unitOfWork.SaveChangesAsync();
+            _unitOfWork.UserRepository.Update(userEntity);
+            
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            //return _unitOfWork.SaveChangesAsync();
         }
 
         #endregion IUserRoleStore<IdentityUser, Guid> Members
@@ -304,23 +415,29 @@ namespace Analytics.Web.Api.Identity
 
         #region IUserPasswordStore<IdentityUser, Guid> Members
 
-        public Task<string> GetPasswordHashAsync(IdentityUser user)
+        public Task<string> GetPasswordHashAsync(IdentityUser identityUser)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
-            return Task.FromResult<string>(user.PasswordHash);
+            }
+
+            return Task.FromResult<string>(identityUser.PasswordHash);
         }
 
-        public Task<bool> HasPasswordAsync(IdentityUser user)
+        public Task<bool> HasPasswordAsync(IdentityUser identityUser)
         {
-            if (user == null)
+            if (identityUser == null)
+            {
                 throw new ArgumentNullException("user");
-            return Task.FromResult<bool>(!string.IsNullOrWhiteSpace(user.PasswordHash));
+            }
+
+            return Task.FromResult<bool>(!string.IsNullOrWhiteSpace(identityUser.PasswordHash));
         }
 
-        public Task SetPasswordHashAsync(IdentityUser user, string passwordHash)
+        public Task SetPasswordHashAsync(IdentityUser identityUser, string passwordHash)
         {
-            user.PasswordHash = passwordHash;
+            identityUser.PasswordHash = passwordHash;
             return Task.FromResult(0);
         }
 
@@ -330,63 +447,68 @@ namespace Analytics.Web.Api.Identity
 
         #region IUserSecurityStampStore<IdentityUser, Guid> Members
 
-        public Task<string> GetSecurityStampAsync(IdentityUser user)
+        public Task<string> GetSecurityStampAsync(IdentityUser identityUser)
         {
-            if (user == null)
+            if (identityUser == null)
             {
                 throw new ArgumentNullException("user");
             }
-                
-            return Task.FromResult<string>(user.SecurityStamp);
+
+            return Task.FromResult<string>(identityUser.SecurityStamp);
         }
 
-        public Task SetSecurityStampAsync(IdentityUser user, string stamp)
+        public Task SetSecurityStampAsync(IdentityUser identityUser, string stamp)
         {
-            user.SecurityStamp = stamp;
+            identityUser.SecurityStamp = stamp;
             return Task.FromResult(0);
         }
 
         #endregion
         //---------------------------------------------------------------------
 
+
         #region Private Methods
 
-        private Entities.User getUser(IdentityUser identityUser)
+        private Entities.User GetUser(IdentityUser identityUser)
         {
             if (identityUser == null)
+            {
                 return null;
+            }
+            
+            var userEntity = new Entities.User();
+            PopulateUser(userEntity, identityUser);
 
-            var user = new Entities.User();
-            populateUser(user, identityUser);
-
-            return user;
+            return userEntity;
         }
 
-        private void populateUser(Entities.User user, IdentityUser identityUser)
+        private void PopulateUser(Entities.User userEntity, IdentityUser identityUser)
         {
-            user.UserId = identityUser.Id;
-            user.UserName = identityUser.UserName;
-            user.PasswordHash = identityUser.PasswordHash;
-            user.SecurityStamp = identityUser.SecurityStamp;
+            userEntity.UserId = identityUser.Id;
+            userEntity.UserName = identityUser.UserName;
+            userEntity.PasswordHash = identityUser.PasswordHash;
+            userEntity.SecurityStamp = identityUser.SecurityStamp;
         }
 
-        private IdentityUser getIdentityUser(Entities.User user)
+        private IdentityUser GetIdentityUser(Entities.User userEntity)
         {
-            if (user == null)
+            if (userEntity == null)
+            {
                 return null;
-
+            }
+            
             var identityUser = new IdentityUser();
-            populateIdentityUser(identityUser, user);
+            PopulateIdentityUser(identityUser, userEntity);
 
             return identityUser;
         }
 
-        private void populateIdentityUser(IdentityUser identityUser, Entities.User user)
+        private void PopulateIdentityUser(IdentityUser identityUser, Entities.User userEntity)
         {
-            identityUser.Id = user.UserId;
-            identityUser.UserName = user.UserName;
-            identityUser.PasswordHash = user.PasswordHash;
-            identityUser.SecurityStamp = user.SecurityStamp;
+            identityUser.Id = userEntity.UserId;
+            identityUser.UserName = userEntity.UserName;
+            identityUser.PasswordHash = userEntity.PasswordHash;
+            identityUser.SecurityStamp = userEntity.SecurityStamp;
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace Analytics.Data.EntityFramework.Configuration
     {
         internal ClaimConfiguration()
         {
-            ToTable("Claim");
+            ToTable("User.Claim");
 
             HasKey(x => x.ClaimId)
                 .Property(x => x.ClaimId)

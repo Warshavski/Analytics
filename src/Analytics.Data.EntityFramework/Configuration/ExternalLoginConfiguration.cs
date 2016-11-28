@@ -11,7 +11,7 @@ namespace Analytics.Data.EntityFramework.Configuration
     {
         internal ExternalLoginConfiguration()
         {
-            ToTable("ExternalLogin");
+            ToTable("User.ExternalLogin");
 
             HasKey(x => new { x.LoginProvider, x.ProviderKey, x.UserId });
 

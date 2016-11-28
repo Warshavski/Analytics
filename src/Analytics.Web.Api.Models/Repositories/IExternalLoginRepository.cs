@@ -1,10 +1,7 @@
-﻿using Analytics.Web.Api.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+
+using Analytics.Web.Api.Models.Entities;
 
 namespace Analytics.Web.Api.Models.Repositories
 {

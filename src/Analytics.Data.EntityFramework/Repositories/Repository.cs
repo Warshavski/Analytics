@@ -8,7 +8,7 @@ using Analytics.Web.Api.Models.Repositories;
 
 namespace Analytics.Data.EntityFramework.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity> 
+    public class Repository<TEntity> : IRepository<TEntity> 
         where TEntity : class
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +19,7 @@ namespace Analytics.Data.EntityFramework.Repositories
             get { return _set ?? (_set = _context.Set<TEntity>()); }
         }
 
-        internal Repository(ApplicationDbContext context)
+        public Repository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -31,14 +31,14 @@ namespace Analytics.Data.EntityFramework.Repositories
             return Set.ToList();
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
-            return Set.ToListAsync();
+            return await Set.ToListAsync();
         }
 
-        public Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return Set.ToListAsync(cancellationToken);
+            return await Set.ToListAsync(cancellationToken);
         }
 
         public List<TEntity> PageAll(int skip, int take)
@@ -46,14 +46,14 @@ namespace Analytics.Data.EntityFramework.Repositories
             return Set.Skip(skip).Take(take).ToList();
         }
 
-        public Task<List<TEntity>> PageAllAsync(int skip, int take)
+        public async Task<List<TEntity>> PageAllAsync(int skip, int take)
         {
-            return Set.Skip(skip).Take(take).ToListAsync();
+            return await Set.Skip(skip).Take(take).ToListAsync();
         }
 
-        public Task<List<TEntity>> PageAllAsync(CancellationToken cancellationToken, int skip, int take)
+        public async Task<List<TEntity>> PageAllAsync(CancellationToken cancellationToken, int skip, int take)
         {
-            return Set.Skip(skip).Take(take).ToListAsync(cancellationToken);
+            return await Set.Skip(skip).Take(take).ToListAsync(cancellationToken);
         }
 
         public TEntity FindById(object id)
@@ -61,14 +61,14 @@ namespace Analytics.Data.EntityFramework.Repositories
             return Set.Find(id);
         }
 
-        public Task<TEntity> FindByIdAsync(object id)
+        public async Task<TEntity> FindByIdAsync(object id)
         {
-            return Set.FindAsync(id);
+            return await Set.FindAsync(id);
         }
 
-        public Task<TEntity> FindByIdAsync(CancellationToken cancellationToken, object id)
+        public async Task<TEntity> FindByIdAsync(CancellationToken cancellationToken, object id)
         {
-            return Set.FindAsync(cancellationToken, id);
+            return await Set.FindAsync(cancellationToken, id);
         }
 
         public void Add(TEntity entity)

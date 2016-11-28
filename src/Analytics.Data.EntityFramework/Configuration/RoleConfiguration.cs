@@ -11,7 +11,7 @@ namespace Analytics.Data.EntityFramework.Configuration
     {
         internal RoleConfiguration()
         {
-            ToTable("Role");
+            ToTable("User.Role");
 
             HasKey(x => x.RoleId)
                 .Property(x => x.RoleId)

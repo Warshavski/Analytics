@@ -6,13 +6,13 @@ using Analytics.Web.Api.Models.Entities;
 
 namespace Analytics.Data.EntityFramework
 {
-    internal class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         internal IDbSet<User> Users { get; set; }
         internal IDbSet<Role> Roles { get; set; }
         internal IDbSet<ExternalLogin> Logins { get; set; }
 
-        internal ApplicationDbContext(string nameOrConnectionString)
+        public ApplicationDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
         }

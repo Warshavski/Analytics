@@ -7,9 +7,9 @@ using Analytics.Web.Api.Models.Repositories;
 
 namespace Analytics.Data.EntityFramework.Repositories
 {
-    internal class RoleRepository : Repository<Role>, IRoleRepository
+    public class RoleRepository : Repository<Role>, IRoleRepository
     {
-        internal RoleRepository(ApplicationDbContext context)
+        public RoleRepository(ApplicationDbContext context)
             : base(context)
         {
         }
